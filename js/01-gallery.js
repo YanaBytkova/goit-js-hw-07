@@ -11,7 +11,7 @@ listEl.insertAdjacentHTML("beforeend", listImages);
 console.log(listEl);
 
 const handleListClick = (event) => {
-    if (event.currentTarget === event.target) {
+  if(event.target.nodeName !== 'IMG') {
         return;
     }
     event.preventDefault();
@@ -21,16 +21,21 @@ const handleListClick = (event) => {
   console.log(galleryItems);
   
     const curImage = galleryItems.find((item) => item.original === itemSource);
+    const closeEscape = addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        instance.close();
+    };
+          console.log('You closed window!!!');
+  });
+    const instance = basicLightbox.create(`<div class="modal">
+    <img src=${curImage.original} alt=${curImage.description}></div>`, {
+    onShow: (instance) => window.addEventListener("keydown", closeEscape),
+    onClose: (instance) => window.removeEventListener("keydown", closeEscape)
+})
+   instance.show();
+
+  
     
-    const modalInstance = basicLightbox.create(`<div class="modal">
-     <img src=${curImage.original} alt=${curImage.description}></div>`);
-    modalInstance.show();
-    addEventListener("keydown", event => {
-    if (event.key === "Escape") {
-      modalInstance.close();
-  };
-        console.log('You closed window!!!');
-});
 }
 
 listEl.addEventListener("click", handleListClick);
