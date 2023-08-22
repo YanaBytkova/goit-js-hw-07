@@ -29,13 +29,11 @@ const handleListClick = (event) => {
   });
     const instance = basicLightbox.create(`<div class="modal">
     <img src=${curImage.original} alt=${curImage.description}></div>`, {
-    onShow: (instance) => window.addEventListener("keydown", closeEscape),
-    onClose: (instance) => window.removeEventListener("keydown", closeEscape)
+      onShow: (instance) => { instance.element().querySelector('img').onclick = instance.close; window.addEventListener("keydown", closeEscape) },
+      onClose: (instance) => window.removeEventListener("keydown", closeEscape)
 })
    instance.show();
 
-  
-    
 }
 
 listEl.addEventListener("click", handleListClick);
